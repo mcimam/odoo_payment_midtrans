@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+   <record id="payment_provider_form" model="ir.ui.view">
+      <field name="name">Midtrans Provider Form</field>
+      <field name="model">payment.provider</field>
+      <field name="inherit_id" ref="payment.payment_provider_form"/>
+      <field name="arch" type="xml">
+        <group name="provider_credentials" position='inside'>
+          <group attrs="{'invisible': [('code', '!=', 'midtrans')]}">
+            <field name="midtrans_method"/>
+            <field name="midtrans_merchant_id"/>
+            <field name="midtrans_client_key"/>
+            <field name="midtrans_server_key"/>
+          </group>
+
+        </group>
+      </field>
+    </record>
+  </data>
+</odoo>
