@@ -8,12 +8,10 @@
       <field name="arch" type="xml">
         <group name="provider_credentials" position='inside'>
           <group attrs="{'invisible': [('code', '!=', 'midtrans')]}">
-            <field name="midtrans_method"/>
             <field name="midtrans_merchant_id"/>
             <field name="midtrans_client_key"/>
             <field name="midtrans_server_key"/>
           </group>
-
         </group>
       </field>
     </record>

@@ -21,9 +21,9 @@ class AcquirerMidtrans(models.Model):
         selection_add=[("midtrans", "Midtrans")], ondelete={"midtrans": "set default"}
     )
 
-    midtrans_method = fields.Selection(
-        [("snap", "SNAP"), ("core", "Core API")], string="Midtrans Method"
-    )
+    # midtrans_method = fields.Selection(
+    #     [("snap", "SNAP"), ("core", "Core API")], string="Midtrans Method"
+    # )
 
     midtrans_merchant_id = fields.Char(
         "Midtrans Merchant ID",
@@ -38,6 +38,25 @@ class AcquirerMidtrans(models.Model):
     midtrans_server_key = fields.Char(
         "Midtrans Server Key", required_if_provider="midtrans", groups="base.group_user"
     )
+
+    # === COMPUTE METHODS ===#
+    @api.depends('code')
+    def _compute_view_configuration_fields(self):
+        """ Override of payment to hide the credentials page.
+
+        :return: None
+        """
+        super()._compute_view_configuration_fields()
+        self.filtered(lambda p: p.code == 'demo').show_credentials_page = False
+
+    def _compute_feature_support_fields(self):
+        """ Override of `payment` to enable additional features. """
+        super()._compute_feature_support_fields()
+        self.filtered(lambda p: p.code == 'demo').update({
+            'support_fees': True,
+            'support_manual_capture': True,
+            'support_refund': 'partial',
+        })
 
     def midtrans_form_generate_values(self, values):
         values["client_key"] = self.midtrans_client_key

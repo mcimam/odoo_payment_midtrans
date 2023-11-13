@@ -28,7 +28,7 @@ class MidtransController(http.Controller):
         """
         _logger.info("Handling redirection from mmidtrans web checkout")
 
-        request.env["payment.transaction"].sudo()._handle_notification_data("midtrans", data)
+        # request.env["payment.transaction"].sudo()._handle_notification_data("midtrans", data)
         return request.redirect("/payment/status")
 
     @http.route(_webhook_url, type="json", methods=["POST"], auth="public")
