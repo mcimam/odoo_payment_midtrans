@@ -1,15 +1,10 @@
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-# The currencies supported by Flutterwave, in ISO 4217 format.
-# See https://flutterwave.com/us/support/general/what-are-the-currencies-accepted-on-flutterwave.
-# Last website update: June 2022.
-# Last seen online: 24 November 2022.
 SUPPORTED_CURRENCIES = [
     "IDR",
 ]
 
 
-# Mapping of transaction states to Flutterwave payment statuses.
+# Mapping of transaction states to payment status.
 PAYMENT_STATUS_MAPPING = {
     "authorized": ["authorize"],
     "pending": ["pending"],
