@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 {
-    "name": "Midtrans Payment Acquirer",
+    "name": "Midtrans Payment Provider",
     "category": "Accounting",
-    "summary": "Payment Acquirer: Midtrans",
+    "summary": "Payment Provider: Midtrans",
     "version": "16.0.0.1",
     "description": """
         Unofficial module for Midtrans payment gateway.
@@ -11,6 +11,8 @@
     """,
     "depends": ["payment", "l10n_id"],
     "external_dependencies": {"python": ["midtransclient"]},
+    'post_init_hook': 'post_init_hook',
+    'uninstall_hook': 'uninstall_hook',
     "data": [
         "views/payment_views.xml",
         "views/payment_midtrans_templates.xml",
