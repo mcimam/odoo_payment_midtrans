@@ -4,7 +4,7 @@
     "name": "Midtrans Payment Provider",
     "category": "Accounting",
     "summary": "Payment Provider: Midtrans",
-    "version": "16.0.0.1",
+    "version": "17.0.1.0.0",
     "description": """
         Unofficial module for Midtrans payment gateway.
         Ported from https://github.com/dozymoe/payment_midtrans
@@ -25,5 +25,4 @@
     },
     "installable": True,
     "author": "Choirul Imam",
-    "website": "http://dozy.moe",
 }

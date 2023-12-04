@@ -52,10 +52,11 @@ class AcquirerMidtrans(models.Model):
     def _compute_feature_support_fields(self):
         """ Override of `payment` to enable additional features. """
         super()._compute_feature_support_fields()
-        self.filtered(lambda p: p.code == 'demo').update({
-            'support_fees': True,
-            'support_manual_capture': True,
-            'support_refund': 'partial',
+        self.filtered(lambda p: p.code == 'midtrans').update({
+            'support_express_checkout': True,
+            'support_manual_capture': False,
+            'support_refund': False,
+            'support_tokenization': False,
         })
 
     def midtrans_form_generate_values(self, values):
