@@ -3,6 +3,12 @@ SUPPORTED_CURRENCIES = [
     "IDR",
 ]
 
+DEFAULT_PAYMENT_METHODS_CODES = [
+    # Primary payment methods.
+    'midtrans',
+]
+
+
 
 # Mapping of transaction states to payment status.
 PAYMENT_STATUS_MAPPING = {
@@ -16,5 +22,5 @@ PAYMENT_STATUS_MAPPING = {
         "chargeback",
         "partial_chargeback",
     ],
-    "error": ["failure", "deny", "expire    "],
+    "error": ["failure", "deny", "expire"],
 }

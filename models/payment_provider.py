@@ -7,8 +7,7 @@ from odoo import api, fields, models
 from odoo.http import request
 
 # from odoo.addons.payment_midtrans.controllers.main import MidtransController
-from odoo.tools import float_round
-from dateutil.parser import parse as dateparse
+from odoo.addons.payment_midtrans import const
 
 
 _logger = logging.getLogger(__name__)
@@ -108,3 +107,10 @@ class AcquirerMidtrans(models.Model):
             return "https://app.sandbox.midtrans.com/snap/v1/transactions"
 
         return "https://app.midtrans.com/snap/v1/transactions"
+
+    def _get_default_payment_method_codes(self):
+        """ Override of `payment` to return the default payment method codes. """
+        default_codes = super()._get_default_payment_method_codes()
+        if self.code != 'midtrans':
+            return default_codes
+        return const.DEFAULT_PAYMENT_METHODS_CODES
