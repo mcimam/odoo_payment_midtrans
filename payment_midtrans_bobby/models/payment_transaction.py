@@ -6,8 +6,8 @@ from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.addons.payment import utils as payment_utils
 
-from odoo.addons.payment_midtrans.const import PAYMENT_STATUS_MAPPING
-from odoo.addons.payment_midtrans.controllers.main import MidtransController
+from odoo.addons.payment_midtrans_bobby.const import PAYMENT_STATUS_MAPPING
+from odoo.addons.payment_midtrans_bobby.controllers.main import MidtransController
 
 _logger = logging.getLogger(__name__)
 
@@ -31,7 +31,9 @@ class PaymentTransaction(models.Model):
             return res
 
         # base_url = self.provider_id.get_base_url()
-        partner_first_name, partner_last_name = payment_utils.split_partner_name(self.partner_name)
+        partner_first_name, partner_last_name = payment_utils.split_partner_name(
+            self.partner_name
+        )
         # webhook_url = urls.url_join(base_url, PaypalController._webhook_url)
         param = {
             "transaction_details": {
@@ -65,11 +67,18 @@ class PaymentTransaction(models.Model):
 
         reference = notification_data.get("order_id")
         if not reference:
-            raise ValidationError("Midtrans: " + _("Received data with missing reference."))
+            raise ValidationError(
+                "Midtrans: " + _("Received data with missing reference.")
+            )
 
-        tx = self.search([("reference", "=", reference), ("provider_code", "=", "midtrans")])
+        tx = self.search(
+            [("reference", "=", reference), ("provider_code", "=", "midtrans")]
+        )
         if not tx:
-            raise ValidationError("Midtrans: " + _("No transaction found matching reference %s.", reference))
+            raise ValidationError(
+                "Midtrans: "
+                + _("No transaction found matching reference %s.", reference)
+            )
         return tx
 
     def _process_notification_data(self, notification_data):
@@ -90,22 +99,28 @@ class PaymentTransaction(models.Model):
         payment_status = notification_data["transaction_status"]
 
         # determinse state
-        if payment_status in PAYMENT_STATUS_MAPPING['pending']:
+        if payment_status in PAYMENT_STATUS_MAPPING["pending"]:
             self._set_pending()
-        elif payment_status in PAYMENT_STATUS_MAPPING['done']:
+        elif payment_status in PAYMENT_STATUS_MAPPING["done"]:
             self._set_done()
-        elif payment_status in PAYMENT_STATUS_MAPPING['cancel']:
+        elif payment_status in PAYMENT_STATUS_MAPPING["cancel"]:
             self._set_canceled()
-        elif payment_status in PAYMENT_STATUS_MAPPING['error']:
-            self._set_error(_(
-                "An error occurred during the processing of your payment (status %s). Please try "
-                "again.", payment_status
-            ))
+        elif payment_status in PAYMENT_STATUS_MAPPING["error"]:
+            self._set_error(
+                _(
+                    "An error occurred during the processing of your payment (status %s). Please try "
+                    "again.",
+                    payment_status,
+                )
+            )
         else:
             _logger.warning(
                 "Received data with invalid payment status (%s) for transaction with reference %s.",
-                payment_status, self.reference
+                payment_status,
+                self.reference,
             )
-            self._set_error("Midtrans: " + _("Unknown payment status: %s", payment_status))
+            self._set_error(
+                "Midtrans: " + _("Unknown payment status: %s", payment_status)
+            )
 
         self._set_pending()

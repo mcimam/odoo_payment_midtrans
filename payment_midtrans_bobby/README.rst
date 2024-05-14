@@ -39,7 +39,7 @@ Installation
 ============
 
 * Be sure to have the ``midtransclient`` library.
-* Rename module to ``payment_midtrans``.
+* Rename module to ``payment_midtrans_bobby``.
 
 Configuration
 =============

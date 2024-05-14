@@ -6,8 +6,7 @@ import midtransclient
 from odoo import api, fields, models
 from odoo.http import request
 
-# from odoo.addons.payment_midtrans.controllers.main import MidtransController
-from odoo.addons.payment_midtrans import const
+from odoo.addons.payment_midtrans_bobby import const
 
 
 _logger = logging.getLogger(__name__)
@@ -39,24 +38,26 @@ class AcquirerMidtrans(models.Model):
     )
 
     # === COMPUTE METHODS ===#
-    @api.depends('code')
+    @api.depends("code")
     def _compute_view_configuration_fields(self):
-        """ Override of payment to hide the credentials page.
+        """Override of payment to hide the credentials page.
 
         :return: None
         """
         super()._compute_view_configuration_fields()
-        self.filtered(lambda p: p.code == 'demo').show_credentials_page = False
+        self.filtered(lambda p: p.code == "demo").show_credentials_page = False
 
     def _compute_feature_support_fields(self):
-        """ Override of `payment` to enable additional features. """
+        """Override of `payment` to enable additional features."""
         super()._compute_feature_support_fields()
-        self.filtered(lambda p: p.code == 'midtrans').update({
-            'support_express_checkout': True,
-            'support_manual_capture': False,
-            'support_refund': False,
-            'support_tokenization': False,
-        })
+        self.filtered(lambda p: p.code == "midtrans").update(
+            {
+                "support_express_checkout": True,
+                "support_manual_capture": False,
+                "support_refund": False,
+                "support_tokenization": False,
+            }
+        )
 
     def midtrans_form_generate_values(self, values):
         values["client_key"] = self.midtrans_client_key
@@ -109,8 +110,8 @@ class AcquirerMidtrans(models.Model):
         return "https://app.midtrans.com/snap/v1/transactions"
 
     def _get_default_payment_method_codes(self):
-        """ Override of `payment` to return the default payment method codes. """
+        """Override of `payment` to return the default payment method codes."""
         default_codes = super()._get_default_payment_method_codes()
-        if self.code != 'midtrans':
+        if self.code != "midtrans":
             return default_codes
         return const.DEFAULT_PAYMENT_METHODS_CODES
