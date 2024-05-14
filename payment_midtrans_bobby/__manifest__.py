@@ -7,12 +7,11 @@
     "version": "16.0.0.1",
     "description": """
         Unofficial module for Midtrans payment gateway.
-        Ported from https://github.com/dozymoe/payment_midtrans
     """,
     "depends": ["payment", "l10n_id"],
     "external_dependencies": {"python": ["midtransclient"]},
-    'post_init_hook': 'post_init_hook',
-    'uninstall_hook': 'uninstall_hook',
+    "post_init_hook": "post_init_hook",
+    "uninstall_hook": "uninstall_hook",
     "data": [
         "views/payment_views.xml",
         "views/payment_midtrans_templates.xml",
@@ -20,7 +19,7 @@
     ],
     "assets": {
         "web.assets_frontend": [
-            "payment_midtrans/static/src/js/main.js",
+            "payment_midtrans_bobby/static/src/js/main.js",
         ],
     },
     "installable": True,
