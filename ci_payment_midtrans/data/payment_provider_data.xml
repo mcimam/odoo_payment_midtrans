@@ -14,7 +14,7 @@
         <field name="allow_express_checkout">True</field>
         <field name="payment_method_ids"
                eval="[Command.set([
-                         ref('payment_midtrans.payment_method_midtrans'),
+                         ref('ci_payment_midtrans.payment_method_midtrans'),
                      ])]"
         />
     </record>
