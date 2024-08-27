@@ -67,14 +67,14 @@ Credits
 Authors
 ~~~~~~~
 
-* Choirul Imam
+* Mcimam
 
 Contributors
 ~~~~~~~~~~~~
 
 * Mcimam <imam123.ci@gmail.com>
-* Dozymoe  <>
 
 Maintainers
 ~~~~~~~~~~~
+* Mcimam <imam123.ci@gmail.com>
 
