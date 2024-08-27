@@ -6,8 +6,8 @@ from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.addons.payment import utils as payment_utils
 
-from odoo.addons.payment_midtrans_bobby.const import PAYMENT_STATUS_MAPPING
-from odoo.addons.payment_midtrans_bobby.controllers.main import MidtransController
+from odoo.addons.ci_payment_midtrans.const import PAYMENT_STATUS_MAPPING
+from odoo.addons.ci_payment_midtrans.controllers.main import MidtransController
 
 _logger = logging.getLogger(__name__)
 

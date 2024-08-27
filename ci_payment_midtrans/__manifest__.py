@@ -2,6 +2,8 @@
 
 {
     "name": "Midtrans Payment Provider",
+    "author": "Choirul Imam",
+    "license": "LGPL-3"
     "category": "Accounting",
     "summary": "Payment Provider: Midtrans",
     "version": "17.0.1.0.0",
@@ -18,9 +20,8 @@
     ],
     "assets": {
         "web.assets_frontend": [
-            "payment_midtrans_bobby/static/src/js/main.js",
+            "ci_payment_midtrans/static/src/js/main.js",
         ],
     },
     "installable": True,
-    "author": "Choirul Imam",
 }

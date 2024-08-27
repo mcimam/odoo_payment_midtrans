@@ -6,7 +6,7 @@ import midtransclient
 from odoo import api, fields, models
 from odoo.http import request
 
-from odoo.addons.payment_midtrans_bobby import const
+from odoo.addons.ci_payment_midtrans import const
 
 
 _logger = logging.getLogger(__name__)
