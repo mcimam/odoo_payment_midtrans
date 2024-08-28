@@ -17,8 +17,23 @@ DEFAULT_PAYMENT_METHODS_CODES = [
     'mastercard',
 ]
 
+# Map payment method to snap payment method
+PAYMENT_METHODS_MAPPING = {
+    'bank_bca': 'bca_va',
+    'bank_permata': 'permata_va',
+    'bni': 'bni_va',
+    'bsi': 'bsi_va',
+    'cimb_niaga': 'cimb_va',
+    'card': 'credit_card',
+    'gopay': 'gopay',
+    'credit_card': 'credit_card',
+    'bank_transfer': 'bank_transfer',
+    'qris': 'other_qris',
 
-# Mapping of transaction states to payment status.
+}
+
+
+# Map transaction states to payment status.
 PAYMENT_STATUS_MAPPING = {
     "authorized": ["authorize"],
     "pending": ["pending"],

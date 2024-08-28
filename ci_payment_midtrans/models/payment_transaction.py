@@ -5,7 +5,7 @@ from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.addons.payment import utils as payment_utils
 
-from odoo.addons.ci_payment_midtrans.const import PAYMENT_STATUS_MAPPING
+from odoo.addons.ci_payment_midtrans.const import PAYMENT_STATUS_MAPPING, PAYMENT_METHODS_MAPPING
 
 _logger = logging.getLogger(__name__)
 
@@ -46,6 +46,10 @@ class PaymentTransaction(models.Model):
                 "phone": self.partner_phone,
             },
         }
+
+        if self.payment_method_code != 'midtrans':
+            param['enabled_payments'] = [PAYMENT_METHODS_MAPPING.get(self.payment_method_code, self.payment_method_code.lower())]
+
         api_url = self.provider_id._midtrans_make_transaction(param)
         self.midtrans_token = api_url["token"]
         return {"api_url": api_url["redirect_url"]}
