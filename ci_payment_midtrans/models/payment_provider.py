@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import midtransclient
+import requests
+
+from base64 import b64encode
 
 from odoo import api, fields, models, exceptions
-from odoo.http import request
-
 from odoo.addons.ci_payment_midtrans import const
 
 
@@ -76,56 +76,53 @@ class AcquirerMidtrans(models.Model):
             return default_codes
         return const.DEFAULT_PAYMENT_METHODS_CODES
 
-    def get_backend_endpoint(self):
+    # === MIDTRANS CALL METHODS ===#
+    def _midtrans_endpoint(self):
         if self.state == "test":
-            return "https://app.sandbox.midtrans.com/snap/v1/transactions"
+            return "https://app.sandbox.midtrans.com/snap"
 
-        return "https://app.midtrans.com/snap/v1/transactions"
+        return "https://app.midtrans.com/snap"
 
-    def midtrans_form_generate_values(self, values):
-        values["client_key"] = self.midtrans_client_key
-        if self.state == "test":
-            values["snap_js_url"] = "https://app.sandbox.midtrans.com/snap/snap.js"
+    def _midtrans_header(self):
+        key = b64encode(f"{self.midtrans_server_key}:".encode()).decode()
+        return {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": "basic %s" % key,
+        }
+
+    def _midtrans_handle_error(self, trx):
+        sc = trx.status_code
+        em = trx.json().get('error_messages')
+        if sc == 401:
+            raise exceptions.UserError("Midtrans Error: %s" % '. '.join(em))
+        elif sc == 400:
+            raise exceptions.UserError("Midtrans Error: %s" % '. '.join(em))
+        elif sc == 500:
+            raise exceptions.UserError("Midtrans Error: %s" % '. '.join(em))
         else:
-            values["snap_js_url"] = "https://app.midtrans.com/snap/snap.js"
-
-        if "return_url" not in values:
-            values["return_url"] = "/"
-
-        values["order"] = request.website.sale_get_order()
-
-        amount = values["amount"]
-        currency = values["currency"]
-
-        # You must have currency IDR enabled
-        currency_IDR = self.env["res.currency"].search([("name", "=", "IDR")], limit=1)
-
-        assert currency_IDR.name == "IDR"
-
-        # Convert to IDR
-        if currency.id != currency_IDR.id:
-            values["amount"] = int(round(currency.compute(amount, currency_IDR)))
-
-            values["currency"] = currency_IDR
-            values["currency_id"] = currency_IDR.id
-        else:
-            values["amount"] = int(round(amount))
-
-        return values
+            raise Exception("Midtrans Error: %s" % trx.body)
 
     def _midtrans_make_transaction(self, param):
         """
         Make midtrans new transaction
         """
-        snap = midtransclient.Snap(
-            is_production=(self.state == "enabled"),
-            server_key=self.midtrans_server_key,
-            client_key=self.midtrans_client_key,
+        url = "/v1/transactions"
+        url = self._midtrans_endpoint() + url
+
+        trx = requests.post(
+            url,
+            json=param,
+            headers=self._midtrans_header(),
         )
 
-        try:
-            trx = snap.create_transaction(param)
-        except midtransclient.MidtransAPIError as e:
-            raise exceptions.UserError(e.message)
+        if trx.status_code != 200:
+            self._midtrans_handle_error(trx)
 
-        return trx
+        res = trx.json()
+        return res
+
+    def _midtrans_make_refund(self, param):
+        """
+        Make refund 
+        """

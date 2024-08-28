@@ -26,7 +26,6 @@ Currently it use midtrans snap method.
 Instalación
 ===========
 
-* Be sure to have the ``midtransclient`` library.
 
 Configuración
 =============
