@@ -1,13 +1,11 @@
 import logging
 
-from werkzeug import urls
 
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.addons.payment import utils as payment_utils
 
 from odoo.addons.ci_payment_midtrans.const import PAYMENT_STATUS_MAPPING
-from odoo.addons.ci_payment_midtrans.controllers.main import MidtransController
 
 _logger = logging.getLogger(__name__)
 
@@ -18,7 +16,7 @@ class PaymentTransaction(models.Model):
     midtrans_token = fields.Char("Midtrans transaction token")
 
     def _get_specific_rendering_values(self, processing_values):
-        """Override of payment to return Paypal-specific rendering values.
+        """Override of payment to return Midtrans-specific rendering values.
 
         Note: self.ensure_one() from `_get_processing_values`
 

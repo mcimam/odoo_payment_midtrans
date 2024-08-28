@@ -5,9 +5,17 @@ SUPPORTED_CURRENCIES = [
 
 DEFAULT_PAYMENT_METHODS_CODES = [
     # Primary payment methods.
-    'midtrans',
-]
+    'card',
+    'dana',
+    'shopeepay',
+    'gopay',
+    'ovo',
+    'qris',
 
+    # Brand payment methods.
+    'visa',
+    'mastercard',
+]
 
 
 # Mapping of transaction states to payment status.

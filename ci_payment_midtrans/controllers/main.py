@@ -62,10 +62,7 @@ class MidtransController(http.Controller):
 
         provider = tx.provider_id
         signature_data = (
-            data["order_id"]
-            + data["status_code"]
-            + data["gross_amount"]
-            + provider.midtrans_server_key
+            data["order_id"] + data["status_code"] + data["gross_amount"] + provider.midtrans_server_key
         )
 
         assert (data["signature_key"] == sha512(signature_data.encode("UTF-8")).hexdigest())

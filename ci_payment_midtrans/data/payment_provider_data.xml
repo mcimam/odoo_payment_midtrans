@@ -2,21 +2,41 @@
 <odoo>
   <data>
 
-      <record id="payment_provider_midtrans" model="payment.provider">
-        <field name="name">Midtrans</field>
-        <field name="code">midtrans</field>
-        <field name="is_published">True</field>
-        <field name="image_128" type="base64" file="payment_midtrans/static/src/img/midtrans_icon.png"/>
-        <field name="redirect_form_view_id" ref="midtrans_acquirer_button"/>
-        <field name="pre_msg"><![CDATA[
+    <record id="payment_provider_midtrans" model="payment.provider">
+      <field name="name">Midtrans</field>
+      <field name="code">midtrans</field>
+      <field name="is_published">True</field>
+      <field name="image_128" type="base64" file="ci_payment_midtrans/static/src/img/midtrans_icon.png"/>
+      <field name="redirect_form_view_id" ref="redirect_form"/>
+      <field name="pre_msg"><![CDATA[
 <p>You will be redirected to the Midtrans website after clicking on the payment button.</p>]]></field>
-        <field name="allow_tokenization">False</field>
-        <field name="allow_express_checkout">True</field>
-        <field name="payment_method_ids"
-               eval="[Command.set([
-                         ref('ci_payment_midtrans.payment_method_midtrans'),
-                     ])]"
-        />
+      <field name="allow_tokenization">False</field>
+      <field name="allow_express_checkout">True</field>
+      <field name="payment_method_ids" eval="[Command.set([
+                        ref('payment.payment_method_7eleven'),
+                        ref('payment.payment_method_akulaku'),
+                        ref('payment.payment_method_bank_bca'),
+                        ref('payment.payment_method_bank_permata'),
+                        ref('payment.payment_method_billease'),
+                        ref('payment.payment_method_bni'),
+                        ref('payment.payment_method_bri'),
+                        ref('payment.payment_method_bsi'),
+                        ref('payment.payment_method_card'),
+                        ref('payment.payment_method_cashalo'),
+                        ref('payment.payment_method_cebuana'),
+                        ref('payment.payment_method_cimb_niaga'),
+                        ref('payment.payment_method_dana'),
+                        ref('payment.payment_method_gopay'),
+                        ref('payment.payment_method_grabpay'),
+                        ref('payment.payment_method_jeniuspay'),
+                        ref('payment.payment_method_kredivo'),
+                        ref('payment.payment_method_linkaja'),
+                        ref('payment.payment_method_mandiri'),
+                        ref('payment.payment_method_maya'),
+                        ref('payment.payment_method_ovo'),
+                        ref('payment.payment_method_qris'),
+                        ref('payment.payment_method_shopeepay'),
+                     ])]" />
     </record>
 
 

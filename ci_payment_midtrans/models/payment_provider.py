@@ -59,14 +59,37 @@ class AcquirerMidtrans(models.Model):
             }
         )
 
+    # === BUSINESS METHODS ===#
+    def _get_supported_currencies(self):
+        """ Override of `payment` to return the supported currencies. """
+        supported_currencies = super()._get_supported_currencies()
+        if self.code == "midtrans":
+            supported_currencies = supported_currencies.filtered(
+                lambda c: c.name in const.SUPPORTED_CURRENCIES
+            )
+        return supported_currencies
+
+    def _get_default_payment_method_codes(self):
+        """Override of `payment` to return the default payment method codes."""
+        default_codes = super()._get_default_payment_method_codes()
+        if self.code != "midtrans":
+            return default_codes
+        return const.DEFAULT_PAYMENT_METHODS_CODES
+
+    def get_backend_endpoint(self):
+        if self.state == "test":
+            return "https://app.sandbox.midtrans.com/snap/v1/transactions"
+
+        return "https://app.midtrans.com/snap/v1/transactions"
+
     def midtrans_form_generate_values(self, values):
         values["client_key"] = self.midtrans_client_key
-        if self.environment == "test":
+        if self.state == "test":
             values["snap_js_url"] = "https://app.sandbox.midtrans.com/snap/snap.js"
         else:
             values["snap_js_url"] = "https://app.midtrans.com/snap/snap.js"
 
-        if not "return_url" in values:
+        if "return_url" not in values:
             values["return_url"] = "/"
 
         values["order"] = request.website.sale_get_order()
@@ -95,23 +118,10 @@ class AcquirerMidtrans(models.Model):
         Make midtrans new transaction
         """
         snap = midtransclient.Snap(
-            is_production=(self.state == "enable"),
+            is_production=(self.state == "enabled"),
             server_key=self.midtrans_server_key,
             client_key=self.midtrans_client_key,
         )
 
         trx = snap.create_transaction(param)
         return trx
-
-    def get_backend_endpoint(self):
-        if self.environment == "test":
-            return "https://app.sandbox.midtrans.com/snap/v1/transactions"
-
-        return "https://app.midtrans.com/snap/v1/transactions"
-
-    def _get_default_payment_method_codes(self):
-        """Override of `payment` to return the default payment method codes."""
-        default_codes = super()._get_default_payment_method_codes()
-        if self.code != "midtrans":
-            return default_codes
-        return const.DEFAULT_PAYMENT_METHODS_CODES

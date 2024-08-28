@@ -3,7 +3,7 @@
 {
     "name": "Midtrans Payment Provider",
     "author": "Choirul Imam",
-    "license": "LGPL-3"
+    "license": "LGPL-3",
     "category": "Accounting",
     "summary": "Payment Provider: Midtrans",
     "version": "17.0.1.0.0",
@@ -15,7 +15,6 @@
     "data": [
         "views/payment_views.xml",
         "views/payment_midtrans_templates.xml",
-        "data/payment_method_data.xml",
         "data/payment_provider_data.xml",
     ],
     "assets": {
