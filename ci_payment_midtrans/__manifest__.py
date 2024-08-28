@@ -15,6 +15,7 @@
     "data": [
         "views/payment_views.xml",
         "views/payment_midtrans_templates.xml",
+        "data/payment_method_data.xml",
         "data/payment_provider_data.xml",
     ],
     "assets": {

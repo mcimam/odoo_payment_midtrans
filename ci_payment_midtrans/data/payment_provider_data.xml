@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-
     <record id="payment_provider_midtrans" model="payment.provider">
       <field name="name">Midtrans</field>
       <field name="code">midtrans</field>
@@ -13,6 +12,7 @@
       <field name="allow_tokenization">False</field>
       <field name="allow_express_checkout">True</field>
       <field name="payment_method_ids" eval="[Command.set([
+                        ref('ci_payment_midtrans.payment_method_midtrans'),
                         ref('payment.payment_method_7eleven'),
                         ref('payment.payment_method_akulaku'),
                         ref('payment.payment_method_bank_bca'),

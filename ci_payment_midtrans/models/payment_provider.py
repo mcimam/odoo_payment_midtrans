@@ -3,7 +3,7 @@
 import logging
 import midtransclient
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from odoo.http import request
 
 from odoo.addons.ci_payment_midtrans import const
@@ -123,5 +123,9 @@ class AcquirerMidtrans(models.Model):
             client_key=self.midtrans_client_key,
         )
 
-        trx = snap.create_transaction(param)
+        try:
+            trx = snap.create_transaction(param)
+        except midtransclient.MidtransAPIError as e:
+            raise exceptions.UserError(e.message)
+
         return trx

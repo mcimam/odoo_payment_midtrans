@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_method_midtrans" model="payment.method">
+        <field name="name">Midtrans</field>
+        <field name="code">midtrans</field>
+        <field name="sequence">1000</field>
+        <field name="active">False</field>
+        <field name="image" type="base64" file="ci_payment_midtrans/static/src/img/midtrans_icon.png"/>
+        <field name="support_tokenization">False</field>
+        <field name="supported_country_ids" eval="[Command.set([
+                         ref('base.id'),
+                     ])]" />
+        <field name="supported_currency_ids" eval="[Command.set([
+                         ref('base.IDR'),
+                     ])]" />
+    </record>
+
+
+</odoo>
